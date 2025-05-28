@@ -6,6 +6,14 @@
 npm install
 ```
 
+## Environment Variables
+
+### Antes de rodar o projeto, copie o arquivo .env.example e renomeie para .env:
+
+```bash
+cp .env.example .env
+```
+
 ## Database Migration
 
 ### Antes de rodar o projeto, execute as migrations para criar as tabelas do banco de dados:
