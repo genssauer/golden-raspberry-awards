@@ -1,0 +1,62 @@
+<nz-layout class="app-layout">
+  <nz-sider
+    class="menu-sidebar"
+    nzCollapsible
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+  >
+    <div class="sidebar-logo">
+      <a routerLink="/dashboard">
+        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo" />
+        <h1>Frontend Angular Test</h1>
+      </a>
+    </div>
+    <ul
+      nz-menu
+      nzTheme="dark"
+      nzMode="inline"
+      [nzInlineCollapsed]="isCollapsed"
+    >
+      <li
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''"
+        nzSelected
+        routerLink="/dashboard"
+      >
+        <nz-icon nzType="dashboard" nzTheme="outline" />
+        <span>Dashboard</span>
+      </li>
+      <li
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'List' : ''"
+        routerLink="/list"
+      >
+        <nz-icon nzType="unordered-list" nzTheme="outline" />
+        <span>List</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+          <nz-icon
+            class="trigger"
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          />
+        </span>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

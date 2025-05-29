@@ -1,0 +1,152 @@
+<div nz-row [nzGutter]="[16, 16]">
+  <div nz-col nzSpan="12">
+    <h2 nz-typography>List years with multiple winners</h2>
+
+    <nz-table
+      #tableYears
+      [nzData]="yearsWithMultipleWinners().years"
+      [nzBordered]="true"
+      [nzShowPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Win Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of tableYears.data; track data) {
+        <tr>
+          <td>{{ data.year }}</td>
+          <td>{{ data.winnerCount }}</td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+
+    <!-- <pre>
+      {{ yearsWithMultipleWinners().years | json }}
+    </pre> -->
+  </div>
+  <div nz-col nzSpan="12">
+    <h2 nz-typography>Top 3 studios with winners</h2>
+
+    <nz-table
+      #tableStudios
+      [nzData]="studiosWithWinCount().studios"
+      [nzBordered]="true"
+      [nzShowPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Win Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of tableStudios.data; track data) {
+        <tr>
+          <td>{{ data.name }}</td>
+          <td>{{ data.winCount }}</td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+<div nz-row [nzGutter]="[16, 16]" class="dashboard">
+  <div nz-col nzSpan="12">
+    <h2 nz-typography>
+      Producers with longest and shortest interval between wins
+    </h2>
+
+    <h3 nz-typography>Maximum</h3>
+    <nz-table
+      #tableMaxInterval
+      [nzData]="maxMinWinIntervalForProducers().max"
+      [nzBordered]="true"
+      [nzShowPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th [nzWidth]="'25%'">Producer</th>
+          <th [nzWidth]="'25%'">Interval</th>
+          <th [nzWidth]="'25%'">Previous Year</th>
+          <th [nzWidth]="'25%'">Following Year</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of tableMaxInterval.data; track data) {
+        <tr>
+          <td>{{ data.producer }}</td>
+          <td>{{ data.interval }}</td>
+          <td>{{ data.previousWin }}</td>
+          <td>{{ data.followingWin }}</td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+
+    <h3 nz-typography>Minimum</h3>
+    <nz-table
+      #tableMinInterval
+      [nzData]="maxMinWinIntervalForProducers().min"
+      [nzBordered]="true"
+      [nzShowPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th [nzWidth]="'25%'">Producer</th>
+          <th [nzWidth]="'25%'">Interval</th>
+          <th [nzWidth]="'25%'">Previous Year</th>
+          <th [nzWidth]="'25%'">Following Year</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of tableMinInterval.data; track data) {
+        <tr>
+          <td>{{ data.producer }}</td>
+          <td>{{ data.interval }}</td>
+          <td>{{ data.previousWin }}</td>
+          <td>{{ data.followingWin }}</td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+  </div>
+  <div nz-col nzSpan="12">
+    <h2 nz-typography>List movie winners by year</h2>
+
+    <nz-date-picker
+      class="dashboard__date-picker"
+      nzMode="year"
+      nzPlaceHolder="Search by year"
+      [(ngModel)]="date"
+      (ngModelChange)="onChange($event)"
+    ></nz-date-picker>
+
+    <nz-table
+      #tableMovies
+      [nzData]="moviesFiltered()"
+      [nzPageSize]="5"
+      [nzBordered]="true"
+    >
+      <thead>
+        <tr>
+          <th [nzWidth]="'25%'">Id</th>
+          <th [nzWidth]="'35%'">Year</th>
+          <th [nzWidth]="'40%'">Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of tableMovies.data; let i = $index; track data) {
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>{{ data.year }}</td>
+          <td>{{ data.title }}</td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+  </div>
+</div>

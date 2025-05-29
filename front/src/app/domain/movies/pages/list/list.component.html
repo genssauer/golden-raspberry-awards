@@ -1,0 +1,37 @@
+<div nz-row [nzGutter]="[16, 16]">
+  <div nz-col nzSpan="24">
+    <h2 nz-typography>List Movies</h2>
+
+    <nz-table
+      #tableMovies
+      [nzData]="movies()"
+      [nzLoading]="loading()"
+      [nzBordered]="true"
+      [nzShowPagination]="true"
+      [nzFrontPagination]="false"
+      [nzPageIndex]="page().number + 1"
+      [nzTotal]="page().totalElements"
+      [nzPageSize]="page().size"
+      (nzPageIndexChange)="onChangePage($event)"
+    >
+      <thead>
+        <tr>
+          <th [nzWidth]="'25%'">ID</th>
+          <th [nzWidth]="'25%'">Year</th>
+          <th [nzWidth]="'25%'">Title</th>
+          <th [nzWidth]="'25%'">Winner?</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (data of movies(); let i = $index; track data) {
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>{{ data.year }}</td>
+          <td>{{ data.title }}</td>
+          <td>{{ data.winner ? "Yes" : "No" }}</td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+  </div>
+</div>
