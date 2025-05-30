@@ -11,3 +11,7 @@ npm install
 ```bash
 npm run serve
 ```
+
+## Local
+
+http://localhost:4200/

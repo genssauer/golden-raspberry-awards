@@ -9,17 +9,33 @@
       [nzBordered]="true"
       [nzShowPagination]="true"
       [nzFrontPagination]="false"
-      [nzPageIndex]="page().number + 1"
-      [nzTotal]="page().totalElements"
-      [nzPageSize]="page().size"
+      [nzPageIndex]="page()?.number || 0 + 1"
+      [nzTotal]="page()?.totalElements || 100"
+      [nzPageSize]="page()?.size || 10"
       (nzPageIndexChange)="onChangePage($event)"
     >
       <thead>
-        <tr>
+        <tr [formGroup]="searchForm">
           <th [nzWidth]="'25%'">ID</th>
-          <th [nzWidth]="'25%'">Year</th>
+          <th [nzWidth]="'25%'">
+            Year
+
+            <nz-date-picker
+              nzFormat="YYYY"
+              nzMode="year"
+              nzPlaceHolder="Filter by year"
+              formControlName="year"
+            ></nz-date-picker>
+          </th>
           <th [nzWidth]="'25%'">Title</th>
-          <th [nzWidth]="'25%'">Winner?</th>
+          <th [nzWidth]="'25%'">
+            Winner?
+
+            <nz-select nzPlaceHolder="Yes/No" formControlName="winner">
+              <nz-option nzValue="true" nzLabel="Yes"></nz-option>
+              <nz-option nzValue="false" nzLabel="No"></nz-option>
+            </nz-select>
+          </th>
         </tr>
       </thead>
       <tbody>

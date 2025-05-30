@@ -50,12 +50,12 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  protected onChange(result: Date): void {
+  protected onChange(date: Date): void {
     this.store.dispatch(
       MoviesActions.loadMovies({
         page: 0,
         size: 206,
-        year: result.getFullYear(),
+        year: date.getFullYear(),
         winner: true,
       })
     );

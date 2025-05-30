@@ -13,24 +13,16 @@ export const MoviesReducer = createReducer(
       winner,
     },
   })),
-  on(MoviesActions.loadMoviesSuccess, (state, { movies, page, year }) => {
-    const newState = {
-      ...state,
-      movies,
-      page,
-      loading: false,
-      error: null,
-    };
-
-    if (year) {
-      newState.movies = state.movies;
-      newState.moviesFiltered = movies;
-    } else {
-      newState.movies = movies;
-    }
-
-    return newState;
-  }),
+  on(MoviesActions.loadMoviesSuccess, (state, { movies, page, year }) => ({
+    ...state,
+    movies: movies,
+    moviesFiltered: year
+      ? movies.filter((movie) => movie.year === year)
+      : movies,
+    page,
+    loading: false,
+    error: null,
+  })),
   on(MoviesActions.loadMoviesFailure, (state, { error }) => ({
     ...state,
     loading: false,
