@@ -28,6 +28,10 @@ npm run knex -- migrate:latest
 npm run start:dev
 ```
 
+## Access endpoint
+
+http://localhost:3000/producers/intervals
+
 ## Production
 
 ```bash
