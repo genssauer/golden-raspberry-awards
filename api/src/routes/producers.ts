@@ -1,15 +1,25 @@
-import { knex } from "../database";
 import { FastifyInstance } from "fastify";
+import {
+  moviesMemory,
+  producersMemory,
+  movieProducersMemory,
+} from "../utils/load-data";
 
 export async function producersRoutes(app: FastifyInstance) {
   app.get("/intervals", async (request, reply) => {
-    const winners = await knex("movie_producers")
-      .join("movies", "movie_producers.movie_id", "movies.id")
-      .join("producers", "movie_producers.producer_id", "producers.id")
-      .select("producers.name as producer", "movies.year as year")
-      .where("movies.winner", true)
-      .orderBy("producers.name")
-      .orderBy("movies.year", "asc");
+    const winners = movieProducersMemory
+      .map((mp) => {
+        const movie = moviesMemory[mp.movie_id - 1];
+        const producer = producersMemory.find((p) => p.id === mp.producer_id);
+        if (movie && producer && movie.winner) {
+          return {
+            producer: producer.name,
+            year: movie.year,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean) as { producer: string; year: number }[];
 
     const byProducer: Record<string, number[]> = {};
     for (const row of winners) {
@@ -25,7 +35,7 @@ export async function producersRoutes(app: FastifyInstance) {
     }[] = [];
 
     for (const producer in byProducer) {
-      const years = byProducer[producer];
+      const years = byProducer[producer].sort((a, b) => a - b);
       for (let i = 0; i < years.length - 1; i++) {
         intervals.push({
           producer,

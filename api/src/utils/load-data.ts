@@ -1,4 +1,3 @@
-import { knex } from "../database";
 import { loadDataFromCSV } from "./csv-loader";
 
 interface MovieInput {
@@ -9,36 +8,35 @@ interface MovieInput {
   winner: boolean;
 }
 
+export const moviesMemory: MovieInput[] = [];
+export const producersMemory: { id: number; name: string }[] = [];
+export const movieProducersMemory: { movie_id: number; producer_id: number }[] =
+  [];
+
+let producerIdCounter = 1;
+let movieIdCounter = 1;
+
 export async function insertData(filePath: string): Promise<void> {
-  const existing = await knex("movies").count("id as total").first();
-  if (Number(existing?.total ?? 0) > 0) {
-    console.log("Importação de dados já realizada, ignorando novo import...");
+  if (moviesMemory.length > 0) {
+    console.log("Importação de dados já realizada, ignorando novo import...");
     return;
   }
 
   const movies: MovieInput[] = await loadDataFromCSV(filePath);
 
   for (const movie of movies) {
-    const [movieId] = await knex("movies").insert({
-      year: movie.year,
-      title: movie.title,
-      studios: movie.studios,
-      winner: movie.winner,
-    });
+    const movieId = movieIdCounter++;
+    moviesMemory.push({ ...movie });
 
     for (const producerName of movie.producers) {
-      let producer = await knex("producers")
-        .where({ name: producerName })
-        .first();
+      let producer = producersMemory.find((p) => p.name === producerName);
 
       if (!producer) {
-        const [producerId] = await knex("producers").insert({
-          name: producerName,
-        });
-        producer = { id: producerId };
+        producer = { id: producerIdCounter++, name: producerName };
+        producersMemory.push(producer);
       }
 
-      await knex("movie_producers").insert({
+      movieProducersMemory.push({
         movie_id: movieId,
         producer_id: producer.id,
       });
